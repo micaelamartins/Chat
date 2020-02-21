@@ -24,7 +24,18 @@ namespace Chat
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-        }
+            if (tb_mensagem.Text.Length == 0 || tb_username.Text.Length == 0)
+            {
+                MessageBox.Show("Preencha todos os campos");
+            }
+            else
+               {
+                Mensagem mensagem = new Mensagem(DateTime.Now, tb_mensagem.Text, tb_username.Text);
+                lb_chat.Items.Add(mensagem);
+                lb_username.Text = tb_username.Text;
+                tb_mensagem.Text = "";
+            }
+            }
+        
     }
 }
