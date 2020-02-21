@@ -19,23 +19,46 @@ namespace Chat
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            lb_username.Text = "";
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void Textbox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (tb_mensagem.Text.Length == 0 || tb_username.Text.Length == 0)
+            if (e.KeyCode == Keys.Enter)
             {
-                MessageBox.Show("Preencha todos os campos");
+                e.SuppressKeyPress = true;
+                if (tb_username.Text.Length == 0)
+                {
+                    MessageBox.Show("Preencha todos os campos");
+                }
+                else
+                if (string.IsNullOrWhiteSpace(tb_mensagem.Text))
+                {
+                }
+                else
+                {
+                    Mensagem mensagem = new Mensagem(DateTime.Now, tb_mensagem.Text, tb_username.Text);
+                    lb_chat.Items.Add(mensagem);
+                    lb_username.Text = tb_username.Text;
+                    tb_mensagem.Clear();
+                }
             }
-            else
-               {
-                Mensagem mensagem = new Mensagem(DateTime.Now, tb_mensagem.Text, tb_username.Text);
-                lb_chat.Items.Add(mensagem);
-                lb_username.Text = tb_username.Text;
-                tb_mensagem.Text = "";
-            }
-            }
+            //else 
+            //{ 
+            //    if (e.Shift)
+            //    {
+            //        if (e.KeyCode == Keys.Enter)
+            //        {
+            //            tb_mensagem.AppendText(Environment.NewLine);
+            //        }
+            //    }
+            //}
+        }
         
+        private void lb_chat_DoubleClick(object sender, EventArgs e)
+        {
+           //Check if message was sent by user
+           //Allows to delete
+        }
     }
 }
