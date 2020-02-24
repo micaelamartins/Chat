@@ -27,7 +27,14 @@ namespace Chat
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-                if (tb_username.Text.Length == 0)
+                if (e.Shift)
+                {
+                    if (e.KeyCode == Keys.Enter)
+                    {
+                        tb_mensagem.AppendText(Environment.NewLine);
+                    }
+                }
+                else if (tb_username.Text.Length == 0)
                 {
                     MessageBox.Show("Preencha todos os campos");
                 }
@@ -43,22 +50,11 @@ namespace Chat
                     tb_mensagem.Clear();
                 }
             }
-            //else 
-            //{ 
-            //    if (e.Shift)
-            //    {
-            //        if (e.KeyCode == Keys.Enter)
-            //        {
-            //            tb_mensagem.AppendText(Environment.NewLine);
-            //        }
-            //    }
-            //}
         }
-        
         private void lb_chat_DoubleClick(object sender, EventArgs e)
         {
-           //Check if message was sent by user
-           //Allows to delete
+            //Check if message was sent by user
+            //Allows to delete
         }
     }
 }
