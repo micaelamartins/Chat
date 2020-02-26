@@ -9,9 +9,9 @@ namespace Chat
 {
     public partial class Form1 : Form
     {
-        public string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=\\LAPTOP-DD74SLHJ\baseDados\BaseDados.xls;ReadOnly=0;";
-        public string conStr2 = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=\\DESKTOP-EJB4FV8\SharedDatabase\BaseDados.xls;ReadOnly=0;";
-
+        private string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=\\DESKTOP-EJB4FV8\SharedDatabase\BaseDados.xls;ReadOnly=0;";
+        private string conStr2 = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=\\LAPTOP-DD74SLHJ\baseDados\BaseDadoss.xls;ReadOnly=0;";
+        public int id;
 
         public Form1()
         {
@@ -27,8 +27,10 @@ namespace Chat
             con.Open();
             //string query
             string query = "select * from [Folha1$] ";
+            string query_last_id = "SELECT MAX(Id) FROM [Folha1$]";
 
             OdbcCommand cmd = new OdbcCommand(query, con);
+            OdbcCommand cmd_last_id = new OdbcCommand(query_last_id, con);
 
             dt.Load(cmd.ExecuteReader());
             List<DataRow> drList = dt.AsEnumerable().ToList();
@@ -38,6 +40,13 @@ namespace Chat
                 String msgem = "(" + str.ItemArray[3].ToString() + ") " + str.ItemArray[1].ToString() + ": " + str.ItemArray[2].ToString();
                 lb_chat.Items.Add(msgem);
             }
+            OdbcDataReader reader = cmd_last_id.ExecuteReader();
+            // Always call Read before accessing data.
+            while (reader.Read())
+            {
+                lb_chat.Items.Add(reader.GetValue(0));
+            }
+
             con.Close();
         }
 
@@ -77,11 +86,19 @@ namespace Chat
                     //string query
                     string query = "insert into [Folha1$] (Username, Mensagem, Data) values (?, ?, ?)";
 
+                    //Writing on my local Excel File located in my shared folder
                     OdbcCommand cmd = new OdbcCommand(query, con);
                     cmd.Parameters.AddWithValue("?", username);
                     cmd.Parameters.AddWithValue("?", message_text);
                     cmd.Parameters.AddWithValue("?", DateTime.Now);
                     cmd.ExecuteNonQuery();
+
+                    //Writing on another computer's Excel File located in their shared folder
+                    OdbcCommand cmd2 = new OdbcCommand(query, con2);
+                    cmd2.Parameters.AddWithValue("?", username);
+                    cmd2.Parameters.AddWithValue("?", message_text);
+                    cmd2.Parameters.AddWithValue("?", DateTime.Now);
+                    cmd2.ExecuteNonQuery();
 
                     con.Close();
                     con2.Close();
