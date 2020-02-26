@@ -40,10 +40,11 @@
             // 
             this.lb_chat.FormattingEnabled = true;
             this.lb_chat.Location = new System.Drawing.Point(9, 50);
-            this.lb_chat.Margin = new System.Windows.Forms.Padding(2);
+            this.lb_chat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lb_chat.Name = "lb_chat";
-            this.lb_chat.Size = new System.Drawing.Size(390, 290);
+            this.lb_chat.Size = new System.Drawing.Size(390, 381);
             this.lb_chat.TabIndex = 1;
+            this.lb_chat.DoubleClick += new System.EventHandler(this.lb_chat_DoubleClick);
             // 
             // lb_title
             // 
@@ -58,11 +59,12 @@
             // 
             // tb_mensagem
             // 
-            this.tb_mensagem.Location = new System.Drawing.Point(11, 349);
-            this.tb_mensagem.Margin = new System.Windows.Forms.Padding(2);
+            this.tb_mensagem.Location = new System.Drawing.Point(9, 442);
+            this.tb_mensagem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tb_mensagem.Multiline = true;
             this.tb_mensagem.Name = "tb_mensagem";
-            this.tb_mensagem.Size = new System.Drawing.Size(388, 37);
+            this.tb_mensagem.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tb_mensagem.Size = new System.Drawing.Size(390, 53);
             this.tb_mensagem.TabIndex = 3;
             this.tb_mensagem.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Textbox_KeyDown);
             // 
@@ -98,14 +100,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 396);
+            this.ClientSize = new System.Drawing.Size(406, 503);
             this.Controls.Add(this.tb_username);
             this.Controls.Add(this.lb_logged_as);
             this.Controls.Add(this.lb_username);
             this.Controls.Add(this.tb_mensagem);
             this.Controls.Add(this.lb_title);
             this.Controls.Add(this.lb_chat);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
