@@ -27,11 +27,10 @@ namespace Chat
             
             //query strings
             string query = "select * from [Folha1$] ";
-            string query_last_id = "SELECT TOP 1 * FROM [Folha1$] ORDER BY ID DESC";
 
             con.Open();
             OdbcCommand cmd = new OdbcCommand(query, con);
-            OdbcCommand cmd_last_id = new OdbcCommand(query_last_id, con);
+            
             
             //Load all previous messages to the listbox of messages
             dt.Load(cmd.ExecuteReader());
@@ -42,24 +41,7 @@ namespace Chat
                 String msgem = "(" + str.ItemArray[3].ToString() + ") " + str.ItemArray[1].ToString() + ": " + str.ItemArray[2].ToString();
                 lb_chat.Items.Add(msgem);
             }
-
-            //Get the Id of the last message sent on my file
-            OdbcDataReader reader = cmd_last_id.ExecuteReader();
-            while (reader.Read())
-            {
-                id_message_my_file = reader.GetInt32(0);
-            }
             con.Close();
-
-            //Get the Id of the last message sent on the outside file
-            con2.Open();
-            OdbcCommand cmd_last_id_outside_file = new OdbcCommand(query_last_id, con2);
-            OdbcDataReader reader2 = cmd_last_id_outside_file.ExecuteReader();
-            while (reader2.Read())
-            {
-                id_message_outside_file = reader2.GetInt32(0);
-            }
-            con2.Close();
         }
 
         private void Textbox_KeyDown(object sender, KeyEventArgs e)
@@ -83,6 +65,30 @@ namespace Chat
                 //if everything is ok successfully send and save message
                 else
                 {
+                    OdbcConnection con = new OdbcConnection(conStr);
+                    OdbcConnection con2 = new OdbcConnection(conStr2);
+
+                    string query_last_id = "SELECT TOP 1 * FROM [Folha1$] ORDER BY ID DESC";
+
+                    OdbcCommand cmd_last_id = new OdbcCommand(query_last_id, con);
+                    con.Open();
+                    con2.Open();
+
+                    //Get the Id of the last message sent on my file
+                    OdbcDataReader reader = cmd_last_id.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        id_message_my_file = reader.GetInt32(0);
+                    }
+
+                    //Get the Id of the last message sent on the outside file
+                    OdbcCommand cmd_last_id_outside_file = new OdbcCommand(query_last_id, con2);
+                    OdbcDataReader reader2 = cmd_last_id_outside_file.ExecuteReader();
+                    while (reader2.Read())
+                    {
+                        id_message_outside_file = reader2.GetInt32(0);
+                    }
+
                     Mensagem mensagem = new Mensagem(DateTime.Now, tb_mensagem.Text, tb_username.Text);
                     lb_chat.Items.Add(mensagem);
                     id_message_my_file = id_message_my_file + 1;
@@ -96,8 +102,6 @@ namespace Chat
                     string query = "insert into [Folha1$] (Id, Username, Mensagem, Data) values (?, ?, ?, ?)";
 
                     //Writing on my local Excel File located in my shared folder
-                    OdbcConnection con = new OdbcConnection(conStr);
-                    con.Open();
                     OdbcCommand cmd = new OdbcCommand(query, con);
                     cmd.Parameters.AddWithValue("?", id_message_my_file);
                     cmd.Parameters.AddWithValue("?", username);
@@ -107,8 +111,6 @@ namespace Chat
                     con.Close();
 
                     //Writing on another computer's Excel File located in their shared folder
-                    OdbcConnection con2 = new OdbcConnection(conStr2);
-                    con2.Open();
                     OdbcCommand cmd2 = new OdbcCommand(query, con2);
                     cmd2.Parameters.AddWithValue("?", id_message_outside_file);
                     cmd2.Parameters.AddWithValue("?", username);
