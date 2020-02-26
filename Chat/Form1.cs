@@ -9,7 +9,9 @@ namespace Chat
 {
     public partial class Form1 : Form
     {
-        public string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=C:\Users\brume\Desktop\BaseDados.xls;ReadOnly=0;";
+        public string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=\\LAPTOP-DD74SLHJ\baseDados\BaseDados.xls;ReadOnly=0;";
+        public string conStr2 = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=\\DESKTOP-EJB4FV8\SharedDatabase\BaseDados.xls;ReadOnly=0;";
+
 
         public Form1()
         {
@@ -23,7 +25,6 @@ namespace Chat
 
             OdbcConnection con = new OdbcConnection(conStr);
             con.Open();
-
             //string query
             string query = "select * from [Folha1$] ";
 
@@ -69,7 +70,9 @@ namespace Chat
                     tb_mensagem.Text = "";
 
                     OdbcConnection con = new OdbcConnection(conStr);
+                    OdbcConnection con2 = new OdbcConnection(conStr2);
                     con.Open();
+                    con2.Open();
 
                     //string query
                     string query = "insert into [Folha1$] (Username, Mensagem, Data) values (?, ?, ?)";
@@ -81,6 +84,7 @@ namespace Chat
                     cmd.ExecuteNonQuery();
 
                     con.Close();
+                    con2.Close();
                 }
             }
         }
