@@ -12,6 +12,7 @@ namespace Chat
         DateTime Data;
         String Msg;
         String Username;
+       
 
         public Mensagem()
         {

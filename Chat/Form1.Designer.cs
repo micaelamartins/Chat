@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnEnviar = new System.Windows.Forms.Button();
             this.lb_chat = new System.Windows.Forms.ListBox();
             this.lb_title = new System.Windows.Forms.Label();
             this.tb_mensagem = new System.Windows.Forms.TextBox();
@@ -37,22 +36,11 @@
             this.tb_username = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // btnEnviar
-            // 
-            this.btnEnviar.Location = new System.Drawing.Point(9, 349);
-            this.btnEnviar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnEnviar.Name = "btnEnviar";
-            this.btnEnviar.Size = new System.Drawing.Size(56, 37);
-            this.btnEnviar.TabIndex = 0;
-            this.btnEnviar.Text = "Enviar";
-            this.btnEnviar.UseVisualStyleBackColor = true;
-            this.btnEnviar.Click += new System.EventHandler(this.button1_Click);
-            // 
             // lb_chat
             // 
             this.lb_chat.FormattingEnabled = true;
             this.lb_chat.Location = new System.Drawing.Point(9, 50);
-            this.lb_chat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lb_chat.Margin = new System.Windows.Forms.Padding(2);
             this.lb_chat.Name = "lb_chat";
             this.lb_chat.Size = new System.Drawing.Size(390, 290);
             this.lb_chat.TabIndex = 1;
@@ -70,12 +58,13 @@
             // 
             // tb_mensagem
             // 
-            this.tb_mensagem.Location = new System.Drawing.Point(77, 349);
-            this.tb_mensagem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tb_mensagem.Location = new System.Drawing.Point(11, 349);
+            this.tb_mensagem.Margin = new System.Windows.Forms.Padding(2);
             this.tb_mensagem.Multiline = true;
             this.tb_mensagem.Name = "tb_mensagem";
-            this.tb_mensagem.Size = new System.Drawing.Size(322, 37);
+            this.tb_mensagem.Size = new System.Drawing.Size(388, 37);
             this.tb_mensagem.TabIndex = 3;
+            this.tb_mensagem.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Textbox_KeyDown);
             // 
             // lb_username
             // 
@@ -116,8 +105,7 @@
             this.Controls.Add(this.tb_mensagem);
             this.Controls.Add(this.lb_title);
             this.Controls.Add(this.lb_chat);
-            this.Controls.Add(this.btnEnviar);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -127,8 +115,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.ListBox lb_chat;
         private System.Windows.Forms.Label lb_title;
         private System.Windows.Forms.TextBox tb_mensagem;
