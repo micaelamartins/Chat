@@ -9,6 +9,7 @@ namespace Chat
 {
     public partial class Form1 : Form
     {
+        public string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" + @"DBQ=C:\Users\brume\Desktop\BaseDados.xls;ReadOnly=0;";
 
         public Form1()
         {
@@ -17,8 +18,6 @@ namespace Chat
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" +
-           @"DBQ=C:\Users\Micaela\Desktop\BaseDados.xls;ReadOnly=0;";
             DataTable dt = new DataTable();
 
 
@@ -26,9 +25,7 @@ namespace Chat
             con.Open();
 
             //string query
-            string query = "";
-            query = "select * from [Folha1$] ";
-            //String query = "insert into [Folha1$] (Username, Mensagem, Data) values (?, ?, ?)";
+            string query = "select * from [Folha1$] ";
 
             OdbcCommand cmd = new OdbcCommand(query, con);
 
@@ -39,75 +36,52 @@ namespace Chat
                 // Mensagem mensagem = new Mensagem(Date, "Select Mensagem From [Folha1$]", "Select Username From [Folha1$]"); ;
                 String msgem = "(" + str.ItemArray[3].ToString() + ") " + str.ItemArray[1].ToString() + ": " + str.ItemArray[2].ToString();
                 lb_chat.Items.Add(msgem);
-
-
-
-
-
             }
-
-            //lb_chat.DataSource = query.ToList();
-
-            /*cmd.Parameters.AddWithValue("?", tb_mensagem.Text);
-                cmd.Parameters.AddWithValue("?", tb_username.Text);
-                cmd.Parameters.AddWithValue("?", DateTime.Now);
-            //lb_chat.Items.Add(query);
-            lb_chat.DataSource = query.ToList();
-               
-                */
-
-
             con.Close();
-
         }
 
         private void Textbox_KeyDown(object sender, KeyEventArgs e)
         {
+            //Checks if Enter key is pressed on the Textbox
             if (e.KeyCode == Keys.Enter)
             {
-                string conStr = @"Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};" +
-@"DBQ=C:\Users\Micaela\Desktop\BaseDados.xls;ReadOnly=0;Header=True;";
-
                 e.SuppressKeyPress = true;
+                //if shift is pressed, enter will paragraph
                 if (e.Shift)
                 {
-                    if (e.KeyCode == Keys.Enter)
-                    {
-                        tb_mensagem.AppendText(Environment.NewLine);
-                    }
+                    tb_mensagem.AppendText(Environment.NewLine);
                 }
+                //if there is no username available enter will warn that it needs a username
                 else if (tb_username.Text.Length == 0)
                 {
                     MessageBox.Show("Preencha todos os campos");
                 }
-                else
-                if (string.IsNullOrWhiteSpace(tb_mensagem.Text))
-                {
-                }
+                //if message textbox is empty it wont do anything
+                else if (string.IsNullOrWhiteSpace(tb_mensagem.Text));
+                //if everything is ok successfully send message and save in database
                 else
                 {
                     Mensagem mensagem = new Mensagem(DateTime.Now, tb_mensagem.Text, tb_username.Text);
                     lb_chat.Items.Add(mensagem);
-                    lb_username.Text = tb_username.Text;
-                    //tb_mensagem.Text = "";
+                    string username = tb_username.Text;
+                    string message_text = tb_mensagem.Text;
+                    lb_username.Text = username;
+                    tb_mensagem.Text = "";
 
                     OdbcConnection con = new OdbcConnection(conStr);
                     con.Open();
 
                     //string query
-                    string query = "";
-                    query = "insert into [Folha1$] (Username, Mensagem, Data) values (?, ?, ?)";
+                    string query = "insert into [Folha1$] (Username, Mensagem, Data) values (?, ?, ?)";
 
                     OdbcCommand cmd = new OdbcCommand(query, con);
-                    cmd.Parameters.AddWithValue("?", tb_username.Text);
-                    cmd.Parameters.AddWithValue("?", tb_mensagem.Text);
+                    cmd.Parameters.AddWithValue("?", username);
+                    cmd.Parameters.AddWithValue("?", message_text);
                     cmd.Parameters.AddWithValue("?", DateTime.Now);
                     cmd.ExecuteNonQuery();
 
                     con.Close();
-
                 }
-
             }
         }
         private void lb_chat_DoubleClick(object sender, EventArgs e)
